@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBAssistant", "DBAssistant\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalkerCommon", "..\..\WalkerCore\WalkerCommon\WalkerCommon\WalkerCommon.csproj", "{40B9DA0E-CF23-4785-ACC0-B936567390F1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBTest", "DBTest\DBTest.csproj", "{22F3B8CE-58F3-4EA3-A8E6-FF036427665E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{40B9DA0E-CF23-4785-ACC0-B936567390F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40B9DA0E-CF23-4785-ACC0-B936567390F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40B9DA0E-CF23-4785-ACC0-B936567390F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22F3B8CE-58F3-4EA3-A8E6-FF036427665E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22F3B8CE-58F3-4EA3-A8E6-FF036427665E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22F3B8CE-58F3-4EA3-A8E6-FF036427665E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22F3B8CE-58F3-4EA3-A8E6-FF036427665E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
