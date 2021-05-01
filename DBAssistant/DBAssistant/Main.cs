@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using WalkerCommon;
 
 namespace DBAssistant
 {
@@ -14,62 +15,75 @@ namespace DBAssistant
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //查询所有数据库
-            var sqlAllDbs = "SELECT * FROM  sysdatabases";
-            string Str = txtSqlConStr.Text;
+            try
+            {
+                Init();
+
+                //查询所有数据库
+                var sqlAllDbs = "SELECT * FROM  sysdatabases";
+                string conStr = txtSqlConStr.Text;
                 //"Initial Catalog=WalkerDB;Data Source=.;User ID =sa;password=123456";
-            
-             SqlConnection con = new SqlConnection(Str);
-            con.Open();
 
-            lblDbVersion.Text = con.ServerVersion;
+                SqlConnection con = new SqlConnection(conStr);
+                con.Open();
 
-            SqlCommand cmd = new SqlCommand(sqlAllDbs,con);
-            cmd.CommandType = CommandType.Text;
-            //string str = "select Name from 1;";
-            //cmd.CommandText = str;
-            //cmd.Connection = con;
+                lblDbVersion.Text = "数据库版本" + con.ServerVersion;
 
-            var table = new DataTable();
-            var sqlAda = new SqlDataAdapter(cmd);
-            sqlAda.Fill(table);
+                SqlCommand cmd = new SqlCommand(sqlAllDbs, con);
+                cmd.CommandType = CommandType.Text;
+                //string str = "select Name from 1;";
+                //cmd.CommandText = str;
+                //cmd.Connection = con;
 
-            dbList.DataSource = table;
-            dbList.ValueMember = "name";
-            dbList.DisplayMember = "name";
+                var table = new DataTable();
+                var sqlAda = new SqlDataAdapter(cmd);
+                sqlAda.Fill(table);
 
-            //foreach(DataRow row in table.Rows)
-            //{
-            //    dbList.Items.Add(row["name"]);
-            //}
+                clbDbList.DataSource = table;
+                clbDbList.ValueMember = "name";
+                clbDbList.DisplayMember = "name"; ;
 
-            con.Close();
+                var reg = "Catalog=(.*?);";
+                var defaultDbName = RegexHelper.GetFirstMatchValue(conStr, reg);
+                //默认选中连接字符串中的数据库
+                for (var i = 0; i < clbDbList.Items.Count; i++)
+                {
+                    var dtr= clbDbList.Items[i] as DataRowView;
+                    
+                    if (dtr.Row["name"].ToString()== defaultDbName)
+                    {
+                        clbDbList.SetItemCheckState(i, CheckState.Checked);
+                        break;
+                    }
+                }
+
+                this.lblMsg.Text = "获取数据库成功"+ defaultDbName;
+
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
         }
-
-        private void Main_Load(object sender, EventArgs e)
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        private void Init()
         {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
+            this.clbDbList.DataSource = null;
 
         }
 
         private void dbList_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             //设置单选
-            for (int i = 0; i < dbList.Items.Count; i++)
+            for (int i = 0; i < clbDbList.Items.Count; i++)
             {
                 if (i != e.Index)//除去触发SelectedIndexChanged事件以外的选中项都处于未选中状态
                 {
-                    dbList.SetItemCheckState(i, System.Windows.Forms.CheckState.Unchecked);
+                    clbDbList.SetItemCheckState(i, System.Windows.Forms.CheckState.Unchecked);
                 }
             }
         }

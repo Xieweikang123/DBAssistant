@@ -35,16 +35,21 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.菜单ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.dbList = new System.Windows.Forms.CheckedListBox();
+            this.clbDbList = new System.Windows.Forms.CheckedListBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.lblMsg = new System.Windows.Forms.Label();
+            this.clbTableList = new System.Windows.Forms.CheckedListBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.AutoSize = true;
             this.button1.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.button1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.button1.Location = new System.Drawing.Point(306, 466);
+            this.button1.Location = new System.Drawing.Point(405, 528);
             this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(160, 54);
@@ -61,7 +66,6 @@
             this.txtSqlConStr.Size = new System.Drawing.Size(629, 25);
             this.txtSqlConStr.TabIndex = 1;
             this.txtSqlConStr.Text = "Initial Catalog=WalkerDB;Data Source=.;User ID =sa;password=123456";
-            this.txtSqlConStr.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // label1
             // 
@@ -72,17 +76,19 @@
             this.label1.Size = new System.Drawing.Size(127, 15);
             this.label1.TabIndex = 2;
             this.label1.Text = "数据库连接字符串";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // lblDbVersion
             // 
+            this.lblDbVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblDbVersion.AutoSize = true;
-            this.lblDbVersion.Location = new System.Drawing.Point(857, 536);
+            this.lblDbVersion.Location = new System.Drawing.Point(820, 617);
             this.lblDbVersion.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDbVersion.Name = "lblDbVersion";
+            this.lblDbVersion.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.lblDbVersion.Size = new System.Drawing.Size(82, 15);
             this.lblDbVersion.TabIndex = 3;
             this.lblDbVersion.Text = "数据库信息";
+            this.lblDbVersion.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             // 
             // menuStrip1
             // 
@@ -100,7 +106,7 @@
             this.菜单ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem2});
             this.菜单ToolStripMenuItem.Name = "菜单ToolStripMenuItem";
-            this.菜单ToolStripMenuItem.Size = new System.Drawing.Size(53, 24);
+            this.菜单ToolStripMenuItem.Size = new System.Drawing.Size(53, 26);
             this.菜单ToolStripMenuItem.Text = "菜单";
             // 
             // toolStripMenuItem2
@@ -109,14 +115,14 @@
             this.toolStripMenuItem2.Size = new System.Drawing.Size(224, 26);
             this.toolStripMenuItem2.Text = "11";
             // 
-            // dbList
+            // clbDbList
             // 
-            this.dbList.FormattingEnabled = true;
-            this.dbList.Location = new System.Drawing.Point(36, 120);
-            this.dbList.Name = "dbList";
-            this.dbList.Size = new System.Drawing.Size(203, 264);
-            this.dbList.TabIndex = 6;
-            this.dbList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.dbList_ItemCheck);
+            this.clbDbList.FormattingEnabled = true;
+            this.clbDbList.Location = new System.Drawing.Point(36, 120);
+            this.clbDbList.Name = "clbDbList";
+            this.clbDbList.Size = new System.Drawing.Size(175, 264);
+            this.clbDbList.TabIndex = 6;
+            this.clbDbList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.dbList_ItemCheck);
             // 
             // label2
             // 
@@ -128,23 +134,54 @@
             this.label2.TabIndex = 7;
             this.label2.Text = "数据库列表:";
             // 
+            // lblMsg
+            // 
+            this.lblMsg.AutoSize = true;
+            this.lblMsg.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblMsg.Location = new System.Drawing.Point(13, 606);
+            this.lblMsg.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblMsg.Name = "lblMsg";
+            this.lblMsg.Size = new System.Drawing.Size(37, 15);
+            this.lblMsg.TabIndex = 8;
+            this.lblMsg.Text = "消息";
+            // 
+            // clbTableList
+            // 
+            this.clbTableList.FormattingEnabled = true;
+            this.clbTableList.Location = new System.Drawing.Point(347, 120);
+            this.clbTableList.Name = "clbTableList";
+            this.clbTableList.Size = new System.Drawing.Size(175, 264);
+            this.clbTableList.TabIndex = 9;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(344, 102);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(30, 15);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "表:";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1067, 562);
+            this.ClientSize = new System.Drawing.Size(1067, 641);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.clbTableList);
+            this.Controls.Add(this.lblMsg);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.dbList);
+            this.Controls.Add(this.clbDbList);
             this.Controls.Add(this.lblDbVersion);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtSqlConStr);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Main";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Main_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -161,8 +198,11 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem 菜单ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
-        private System.Windows.Forms.CheckedListBox dbList;
+        private System.Windows.Forms.CheckedListBox clbDbList;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblMsg;
+        private System.Windows.Forms.CheckedListBox clbTableList;
+        private System.Windows.Forms.Label label3;
     }
 }
 
