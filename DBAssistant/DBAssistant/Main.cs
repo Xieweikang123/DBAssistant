@@ -16,9 +16,10 @@ namespace DBAssistant
         {
             //查询所有数据库
             var sqlAllDbs = "SELECT * FROM  sysdatabases";
-            string Str = "Initial Catalog=WalkerDB;Data Source=.;User ID =sa;password=123456";
-           
-            SqlConnection con = new SqlConnection(Str);
+            string Str = txtSqlConStr.Text;
+                //"Initial Catalog=WalkerDB;Data Source=.;User ID =sa;password=123456";
+            
+             SqlConnection con = new SqlConnection(Str);
             con.Open();
 
             lblDbVersion.Text = con.ServerVersion;
@@ -29,22 +30,48 @@ namespace DBAssistant
             //cmd.CommandText = str;
             //cmd.Connection = con;
 
-            var talbe = new DataTable();
+            var table = new DataTable();
             var sqlAda = new SqlDataAdapter(cmd);
-            sqlAda.Fill(talbe);
-            
-      
-            //DataSet ds = new DataSet();
-            //read
+            sqlAda.Fill(table);
 
-            //Console.WriteLine("{0} {1} {2:d}", rdr["OrderID"], rdr"CustomerID"], rdr["OrderDate"]);
+            dbList.DataSource = table;
+            dbList.ValueMember = "name";
+            dbList.DisplayMember = "name";
 
-            //SqlDataReader Reader = cmd.ExecuteReader();
-            //Reader.Read();
-            //this.textBox1.Text = Reader.GetString(0);
-            //Reader.Close();
+            //foreach(DataRow row in table.Rows)
+            //{
+            //    dbList.Items.Add(row["name"]);
+            //}
+
             con.Close();
 
+        }
+
+        private void Main_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dbList_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            //设置单选
+            for (int i = 0; i < dbList.Items.Count; i++)
+            {
+                if (i != e.Index)//除去触发SelectedIndexChanged事件以外的选中项都处于未选中状态
+                {
+                    dbList.SetItemCheckState(i, System.Windows.Forms.CheckState.Unchecked);
+                }
+            }
         }
     }
 }
