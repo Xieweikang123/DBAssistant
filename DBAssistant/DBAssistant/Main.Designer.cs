@@ -50,7 +50,7 @@
             this.button1.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.button1.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.button1.Location = new System.Drawing.Point(405, 528);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(160, 54);
             this.button1.TabIndex = 0;
@@ -61,7 +61,7 @@
             // txtSqlConStr
             // 
             this.txtSqlConStr.Location = new System.Drawing.Point(231, 49);
-            this.txtSqlConStr.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtSqlConStr.Margin = new System.Windows.Forms.Padding(4);
             this.txtSqlConStr.Name = "txtSqlConStr";
             this.txtSqlConStr.Size = new System.Drawing.Size(629, 25);
             this.txtSqlConStr.TabIndex = 1;
@@ -97,7 +97,7 @@
             this.菜单ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1067, 30);
+            this.menuStrip1.Size = new System.Drawing.Size(1067, 28);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -106,13 +106,13 @@
             this.菜单ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem2});
             this.菜单ToolStripMenuItem.Name = "菜单ToolStripMenuItem";
-            this.菜单ToolStripMenuItem.Size = new System.Drawing.Size(53, 26);
+            this.菜单ToolStripMenuItem.Size = new System.Drawing.Size(53, 24);
             this.菜单ToolStripMenuItem.Text = "菜单";
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(224, 26);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(110, 26);
             this.toolStripMenuItem2.Text = "11";
             // 
             // clbDbList
@@ -123,6 +123,7 @@
             this.clbDbList.Size = new System.Drawing.Size(175, 264);
             this.clbDbList.TabIndex = 6;
             this.clbDbList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.dbList_ItemCheck);
+            this.clbDbList.SelectedIndexChanged += new System.EventHandler(this.clbDbList_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -179,7 +180,7 @@
             this.Controls.Add(this.txtSqlConStr);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Main";
             this.Text = "Form1";
             this.menuStrip1.ResumeLayout(false);

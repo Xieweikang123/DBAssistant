@@ -8,6 +8,7 @@ namespace DBAssistant
 {
     public partial class Main : Form
     {
+        private string curDbName;
         public Main()
         {
             InitializeComponent();
@@ -44,20 +45,20 @@ namespace DBAssistant
                 clbDbList.DisplayMember = "name"; ;
 
                 var reg = "Catalog=(.*?);";
-                var defaultDbName = RegexHelper.GetFirstMatchValue(conStr, reg);
+                curDbName = RegexHelper.GetFirstMatchValue(conStr, reg);
                 //默认选中连接字符串中的数据库
                 for (var i = 0; i < clbDbList.Items.Count; i++)
                 {
-                    var dtr= clbDbList.Items[i] as DataRowView;
-                    
-                    if (dtr.Row["name"].ToString()== defaultDbName)
+                    var dtr = clbDbList.Items[i] as DataRowView;
+
+                    if (dtr.Row["name"].ToString() == curDbName)
                     {
                         clbDbList.SetItemCheckState(i, CheckState.Checked);
                         break;
                     }
                 }
 
-                this.lblMsg.Text = "获取数据库成功"+ defaultDbName;
+                this.lblMsg.Text = "获取数据库成功" + curDbName;
 
                 con.Close();
             }
@@ -78,6 +79,19 @@ namespace DBAssistant
 
         private void dbList_ItemCheck(object sender, ItemCheckEventArgs e)
         {
+
+            var checkedItem = (CheckedListBox)sender;
+
+            //var pattern = "Catalog=(.*?);";
+
+            if (e.NewValue == CheckState.Checked)
+            {
+                var selected = clbDbList.Items[e.Index] as DataRowView;
+                var newDbName = selected.Row["name"].ToString();
+                this.txtSqlConStr.Text = this.txtSqlConStr.Text.Replace(curDbName, newDbName);
+                curDbName = newDbName;
+            }
+
             //设置单选
             for (int i = 0; i < clbDbList.Items.Count; i++)
             {
@@ -86,6 +100,11 @@ namespace DBAssistant
                     clbDbList.SetItemCheckState(i, System.Windows.Forms.CheckState.Unchecked);
                 }
             }
+        }
+
+        private void clbDbList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
