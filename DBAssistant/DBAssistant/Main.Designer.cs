@@ -40,6 +40,7 @@
             this.lblMsg = new System.Windows.Forms.Label();
             this.clbTableList = new System.Windows.Forms.CheckedListBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.txtTableSearch = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -120,7 +121,7 @@
             this.clbDbList.FormattingEnabled = true;
             this.clbDbList.Location = new System.Drawing.Point(36, 120);
             this.clbDbList.Name = "clbDbList";
-            this.clbDbList.Size = new System.Drawing.Size(175, 264);
+            this.clbDbList.Size = new System.Drawing.Size(202, 344);
             this.clbDbList.TabIndex = 6;
             this.clbDbList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.dbList_ItemCheck);
             this.clbDbList.SelectedIndexChanged += new System.EventHandler(this.clbDbList_SelectedIndexChanged);
@@ -149,9 +150,9 @@
             // clbTableList
             // 
             this.clbTableList.FormattingEnabled = true;
-            this.clbTableList.Location = new System.Drawing.Point(347, 120);
+            this.clbTableList.Location = new System.Drawing.Point(347, 141);
             this.clbTableList.Name = "clbTableList";
-            this.clbTableList.Size = new System.Drawing.Size(175, 264);
+            this.clbTableList.Size = new System.Drawing.Size(208, 344);
             this.clbTableList.TabIndex = 9;
             // 
             // label3
@@ -164,11 +165,21 @@
             this.label3.TabIndex = 10;
             this.label3.Text = "表:";
             // 
+            // txtTableSearch
+            // 
+            this.txtTableSearch.Location = new System.Drawing.Point(382, 99);
+            this.txtTableSearch.Margin = new System.Windows.Forms.Padding(4);
+            this.txtTableSearch.Name = "txtTableSearch";
+            this.txtTableSearch.Size = new System.Drawing.Size(173, 25);
+            this.txtTableSearch.TabIndex = 11;
+            this.txtTableSearch.TextChanged += new System.EventHandler(this.txtTableSearch_TextChanged);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 641);
+            this.Controls.Add(this.txtTableSearch);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.clbTableList);
             this.Controls.Add(this.lblMsg);
@@ -204,6 +215,7 @@
         private System.Windows.Forms.Label lblMsg;
         private System.Windows.Forms.CheckedListBox clbTableList;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtTableSearch;
     }
 }
 
