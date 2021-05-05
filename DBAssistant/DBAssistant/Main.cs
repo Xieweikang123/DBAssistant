@@ -109,9 +109,6 @@ namespace DBAssistant
                 tableNameList = GenericityHelper.TableToList(table, "TABLE_NAME");
 
                 clbTableList.Items.AddRange(tableNameList.ToArray());
-                //clbTableList.DataSource = table;
-                //clbTableList.ValueMember = "TABLE_NAME";
-                //clbTableList.DisplayMember = "TABLE_NAME";
             }
 
             //设置单选
