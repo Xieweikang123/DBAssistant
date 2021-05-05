@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text;
 using System.Windows.Forms;
 using WalkerCommon;
 
@@ -10,7 +11,7 @@ namespace DBAssistant
     public partial class Main : Form
     {
         private string curDbName;
-        private List<string> tableNameList=new List<string>();
+        private List<string> tableNameList = new List<string>();
         public Main()
         {
             InitializeComponent();
@@ -49,7 +50,7 @@ namespace DBAssistant
                 //{
                 //    tableNameList.Add(row["name"].ToString());
                 //}
-               //tableNameList=  GenericityHelper.TableToList(table, "name");
+                //tableNameList=  GenericityHelper.TableToList(table, "name");
 
                 var reg = "Catalog=(.*?);";
                 curDbName = RegexHelper.GetFirstMatchValue(txtSqlConStr.Text, reg);
@@ -72,7 +73,7 @@ namespace DBAssistant
                 MessageBox.Show(ex.Message);
             }
         }
-       
+
         /// <summary>
         /// 初始化
         /// </summary>
@@ -136,12 +137,105 @@ namespace DBAssistant
 
             var sValue = this.txtTableSearch.Text;
 
-            var result = tableNameList.FindAll(m => m.Contains(sValue));
+            //忽略大小写
+            var result = tableNameList.FindAll(m => m.ToUpper().Contains(sValue.ToUpper()));
 
             //var objCollection = new ListBox.ObjectCollection();
             //objCollection.AddRange(result);
 
             this.clbTableList.Items.AddRange(result.ToArray());
+        }
+
+        /// <summary>
+        /// 右键菜单 生成sql插入语句
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void insertToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //生成insert语句
+            // insert into table_name()  values()
+
+            //SELECT *
+            //FROM Fur.INFORMATION_SCHEMA.COLUMNS
+            //where TABLE_NAME = 'City'
+
+            //清空输出框
+            this.rtbSql.Text = string.Empty;
+            var checkedItems = clbTableList.CheckedItems;
+            if (checkedItems.Count == 0)
+            {
+                MessageBox.Show("请选择表");
+                return;
+            }
+
+            var querySql = "SELECT * FROM {0}.INFORMATION_SCHEMA.COLUMNS where TABLE_NAME = '{1}'";
+           
+            
+            foreach(var ckItem in checkedItems)
+            {
+                //查询表列信息
+                querySql = string.Format(querySql, curDbName, ckItem);
+                var columnTable = SqlHelper.GetTable(querySql);
+
+                var insertSql = $"INSERT INTO {ckItem}(";
+
+                var columns = new StringBuilder();
+                var values = new StringBuilder();
+                foreach (DataRow row in columnTable.Rows)
+                {
+                    columns.Append(row["COLUMN_NAME"] + ",");
+                    //是否为空
+                    if (row["IS_NULLABLE"].ToString() == "YES")
+                    {
+                        values.Append("NULL");
+                    }
+                    else
+                    {
+                        switch (row["DATA_TYPE"])
+                        {
+                            case "uniqueidentifier":
+                                values.Append($"'{Guid.NewGuid()}'");
+                                break;
+                            case "int":
+                            case "bigint":
+                            case "bit":
+                            case "decimal":
+                                values.Append("0");
+                                break;
+                            case "nvarchar":
+                                values.Append("''");
+                                break;
+                            case "datetime":
+                            case "datetime2":
+                                values.Append($"'{DateTime.Now}'");
+                                break;
+                            default:
+                                values.Append($"未兼容类型:{row["DATA_TYPE"]}");
+                                break;
+                        }
+                    }
+                    values.Append($",");
+                }
+                insertSql += $"{columns.ToString().TrimEnd(',')}) VALUES ({values.ToString().TrimEnd(',')})\n\n";
+                this.rtbSql.Text += insertSql;
+            }
+            this.lblMsg.Text = "生成insert语句成功";
+        }
+
+        private void clbTableList_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void clbTableList_MouseClick(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void clbTableList_MouseDown(object sender, MouseEventArgs e)
+        {
+
         }
     }
 }

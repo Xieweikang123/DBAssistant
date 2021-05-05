@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.button1 = new System.Windows.Forms.Button();
             this.txtSqlConStr = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -41,7 +42,11 @@
             this.clbTableList = new System.Windows.Forms.CheckedListBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtTableSearch = new System.Windows.Forms.TextBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.insertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rtbSql = new System.Windows.Forms.RichTextBox();
             this.menuStrip1.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
@@ -118,6 +123,7 @@
             // 
             // clbDbList
             // 
+            this.clbDbList.CheckOnClick = true;
             this.clbDbList.FormattingEnabled = true;
             this.clbDbList.Location = new System.Drawing.Point(36, 120);
             this.clbDbList.Name = "clbDbList";
@@ -149,11 +155,16 @@
             // 
             // clbTableList
             // 
+            this.clbTableList.CheckOnClick = true;
+            this.clbTableList.ContextMenuStrip = this.contextMenuStrip1;
             this.clbTableList.FormattingEnabled = true;
             this.clbTableList.Location = new System.Drawing.Point(347, 141);
             this.clbTableList.Name = "clbTableList";
             this.clbTableList.Size = new System.Drawing.Size(208, 344);
             this.clbTableList.TabIndex = 9;
+            this.clbTableList.Click += new System.EventHandler(this.clbTableList_Click);
+            this.clbTableList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.clbTableList_MouseClick);
+            this.clbTableList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.clbTableList_MouseDown);
             // 
             // label3
             // 
@@ -174,11 +185,35 @@
             this.txtTableSearch.TabIndex = 11;
             this.txtTableSearch.TextChanged += new System.EventHandler(this.txtTableSearch_TextChanged);
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.insertToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(120, 28);
+            // 
+            // insertToolStripMenuItem
+            // 
+            this.insertToolStripMenuItem.Name = "insertToolStripMenuItem";
+            this.insertToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.insertToolStripMenuItem.Text = "Insert";
+            this.insertToolStripMenuItem.Click += new System.EventHandler(this.insertToolStripMenuItem_Click);
+            // 
+            // rtbSql
+            // 
+            this.rtbSql.Location = new System.Drawing.Point(608, 165);
+            this.rtbSql.Name = "rtbSql";
+            this.rtbSql.Size = new System.Drawing.Size(365, 253);
+            this.rtbSql.TabIndex = 13;
+            this.rtbSql.Text = "";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 641);
+            this.Controls.Add(this.rtbSql);
             this.Controls.Add(this.txtTableSearch);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.clbTableList);
@@ -196,6 +231,7 @@
             this.Text = "Form1";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -216,6 +252,9 @@
         private System.Windows.Forms.CheckedListBox clbTableList;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtTableSearch;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem insertToolStripMenuItem;
+        private System.Windows.Forms.RichTextBox rtbSql;
     }
 }
 
