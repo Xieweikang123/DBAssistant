@@ -29,17 +29,27 @@ namespace DBAssistant
             {
                 CreateDbConfig(dbConfigPath);
             }
-            cmbSqlConStr.Items.Clear();
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load(dbConfigPath);
-            var dbNodeList = xmlDoc.SelectNodes("//DB/ConnectionStr");
-            foreach (XmlNode node in dbNodeList)
-            {
-                cmbSqlConStr.Items.Add(node.InnerText);
-            }
+            InitCmbDbConfig();
 
-            //数据库默认选中第一项
-            cmbSqlConStr.SelectedIndex = 0;
+           
+        }
+        private void InitCmbDbConfig()
+        {
+            this.SafeInvoke(() =>
+            {
+                cmbSqlConStr.Text = string.Empty;
+                cmbSqlConStr.Items.Clear();
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(dbConfigPath);
+                var dbNodeList = xmlDoc.SelectNodes("//DB/ConnectionStr");
+                foreach (XmlNode node in dbNodeList)
+                {
+                    cmbSqlConStr.Items.Add(node.InnerText);
+                }
+
+                //数据库默认选中第一项
+                cmbSqlConStr.SelectedIndex = 0;
+            });
         }
         /// <summary>
         /// 配置数据库按钮
@@ -48,7 +58,18 @@ namespace DBAssistant
         /// <param name="e"></param>
         private void btnConnConfig_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start(dbConfigPath);
+            var proc= System.Diagnostics.Process.Start(dbConfigPath);
+            proc.EnableRaisingEvents = true;
+            proc.Exited += ConfigOk;
+        }
+        /// <summary>
+        /// 配置完毕
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ConfigOk(object sender, EventArgs e)
+        {
+            InitCmbDbConfig();
         }
         /// <summary>
         /// 创建数据库xml
