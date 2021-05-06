@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.button1 = new System.Windows.Forms.Button();
-            this.txtSqlConStr = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.lblDbVersion = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -45,6 +45,8 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.insertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rtbSql = new System.Windows.Forms.RichTextBox();
+            this.cmbSqlConStr = new System.Windows.Forms.ComboBox();
+            this.btnConnConfig = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -63,15 +65,6 @@
             this.button1.Text = "连接";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // txtSqlConStr
-            // 
-            this.txtSqlConStr.Location = new System.Drawing.Point(231, 49);
-            this.txtSqlConStr.Margin = new System.Windows.Forms.Padding(4);
-            this.txtSqlConStr.Name = "txtSqlConStr";
-            this.txtSqlConStr.Size = new System.Drawing.Size(629, 25);
-            this.txtSqlConStr.TabIndex = 1;
-            this.txtSqlConStr.Text = "Initial Catalog=WalkerDB;Data Source=.;User ID =sa;password=123456";
             // 
             // label1
             // 
@@ -158,7 +151,7 @@
             this.clbTableList.CheckOnClick = true;
             this.clbTableList.ContextMenuStrip = this.contextMenuStrip1;
             this.clbTableList.FormattingEnabled = true;
-            this.clbTableList.Location = new System.Drawing.Point(347, 141);
+            this.clbTableList.Location = new System.Drawing.Point(347, 131);
             this.clbTableList.Name = "clbTableList";
             this.clbTableList.Size = new System.Drawing.Size(208, 344);
             this.clbTableList.TabIndex = 9;
@@ -196,23 +189,46 @@
             // insertToolStripMenuItem
             // 
             this.insertToolStripMenuItem.Name = "insertToolStripMenuItem";
-            this.insertToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.insertToolStripMenuItem.Size = new System.Drawing.Size(119, 24);
             this.insertToolStripMenuItem.Text = "Insert";
             this.insertToolStripMenuItem.Click += new System.EventHandler(this.insertToolStripMenuItem_Click);
             // 
             // rtbSql
             // 
-            this.rtbSql.Location = new System.Drawing.Point(608, 165);
+            this.rtbSql.Location = new System.Drawing.Point(587, 173);
             this.rtbSql.Name = "rtbSql";
             this.rtbSql.Size = new System.Drawing.Size(365, 253);
             this.rtbSql.TabIndex = 13;
             this.rtbSql.Text = "";
+            // 
+            // cmbSqlConStr
+            // 
+            this.cmbSqlConStr.FormattingEnabled = true;
+            this.cmbSqlConStr.Items.AddRange(new object[] {
+            "Initial Catalog=WalkerDB;Data Source=.;User ID =sa;password=123456",
+            "21"});
+            this.cmbSqlConStr.Location = new System.Drawing.Point(229, 49);
+            this.cmbSqlConStr.Name = "cmbSqlConStr";
+            this.cmbSqlConStr.Size = new System.Drawing.Size(629, 23);
+            this.cmbSqlConStr.TabIndex = 14;
+            // 
+            // btnConnConfig
+            // 
+            this.btnConnConfig.Location = new System.Drawing.Point(864, 42);
+            this.btnConnConfig.Name = "btnConnConfig";
+            this.btnConnConfig.Size = new System.Drawing.Size(88, 35);
+            this.btnConnConfig.TabIndex = 15;
+            this.btnConnConfig.Text = "配置";
+            this.btnConnConfig.UseVisualStyleBackColor = true;
+            this.btnConnConfig.Click += new System.EventHandler(this.btnConnConfig_Click);
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 641);
+            this.Controls.Add(this.btnConnConfig);
+            this.Controls.Add(this.cmbSqlConStr);
             this.Controls.Add(this.rtbSql);
             this.Controls.Add(this.txtTableSearch);
             this.Controls.Add(this.label3);
@@ -223,12 +239,14 @@
             this.Controls.Add(this.clbDbList);
             this.Controls.Add(this.lblDbVersion);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.txtSqlConStr);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Main";
-            this.Text = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "数据库帮助1.1";
+            this.Load += new System.EventHandler(this.Main_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
@@ -240,7 +258,6 @@
         #endregion
 
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox txtSqlConStr;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblDbVersion;
         private System.Windows.Forms.MenuStrip menuStrip1;
@@ -255,6 +272,8 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem insertToolStripMenuItem;
         private System.Windows.Forms.RichTextBox rtbSql;
+        private System.Windows.Forms.ComboBox cmbSqlConStr;
+        private System.Windows.Forms.Button btnConnConfig;
     }
 }
 

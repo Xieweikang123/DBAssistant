@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Linq;
 using WalkerCommon;
 
 namespace DBAssistant
@@ -12,9 +15,64 @@ namespace DBAssistant
     {
         private string curDbName;
         private List<string> tableNameList = new List<string>();
+        private string dbConfigPath = AppDomain.CurrentDomain.BaseDirectory + "dbConfig.xml";
         public Main()
         {
             InitializeComponent();
+        }
+        private void Main_Load(object sender, EventArgs e)
+        {
+
+            //数据库配置文件是否存在
+            //var path = AppDomain.CurrentDomain.BaseDirectory + "dbConfig.xml";
+            if (!File.Exists(dbConfigPath))
+            {
+                CreateDbConfig(dbConfigPath);
+            }
+            cmbSqlConStr.Items.Clear();
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(dbConfigPath);
+            var dbNodeList = xmlDoc.SelectNodes("//DB/ConnectionStr");
+            foreach (XmlNode node in dbNodeList)
+            {
+                cmbSqlConStr.Items.Add(node.InnerText);
+            }
+
+            //数据库默认选中第一项
+            cmbSqlConStr.SelectedIndex = 0;
+        }
+        /// <summary>
+        /// 配置数据库按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnConnConfig_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(dbConfigPath);
+        }
+        /// <summary>
+        /// 创建数据库xml
+        /// </summary>
+        private void CreateDbConfig(string path)
+        {
+            //创建
+            XElement xElement = new XElement(
+                  new XElement("DBConfig",
+                      new XElement("DB",
+                          new XElement("ConnectionStr", "Initial Catalog=WalkerDB;Data Source=.;User ID =sa;password=123456"),
+                          new XElement("Date", DateTime.Now.ToString("G"))
+                          )
+                  ));
+
+            //需要指定编码格式，否则在读取时会抛：根级别上的数据无效。 第 1 行 位置 1异常
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Encoding = new UTF8Encoding(false);
+            settings.Indent = true;
+            XmlWriter xw = XmlWriter.Create(path, settings);
+            xElement.Save(xw);
+            //写入文件
+            xw.Flush();
+            xw.Close();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -25,7 +83,7 @@ namespace DBAssistant
 
                 //查询所有数据库
                 var sqlAllDbs = "SELECT * FROM  sysdatabases";
-                SqlHelper.connStr = txtSqlConStr.Text;
+                SqlHelper.connStr = cmbSqlConStr.Text;
                 //"Initial Catalog=WalkerDB;Data Source=.;User ID =sa;password=123456";
 
                 //SqlConnection con = new SqlConnection(conStr);
@@ -53,7 +111,7 @@ namespace DBAssistant
                 //tableNameList=  GenericityHelper.TableToList(table, "name");
 
                 var reg = "Catalog=(.*?);";
-                curDbName = RegexHelper.GetFirstMatchValue(txtSqlConStr.Text, reg);
+                curDbName = RegexHelper.GetFirstMatchValue(cmbSqlConStr.Text, reg);
                 //默认选中连接字符串中的数据库
                 for (var i = 0; i < clbDbList.Items.Count; i++)
                 {
@@ -95,15 +153,16 @@ namespace DBAssistant
             {
                 //先清空
                 clbTableList.Items.Clear();
+                txtTableSearch.Text = string.Empty;
 
                 var selected = clbDbList.Items[e.Index] as DataRowView;
                 var newDbName = selected.Row["name"].ToString();
-                this.txtSqlConStr.Text = this.txtSqlConStr.Text.Replace(curDbName, newDbName);
+                this.cmbSqlConStr.Text = this.cmbSqlConStr.Text.Replace(curDbName, newDbName);
                 curDbName = newDbName;
 
                 //获取所有表
                 var sqlGetAllTables = "select * from  INFORMATION_SCHEMA.TABLES";
-                SqlHelper.connStr = this.txtSqlConStr.Text;
+                SqlHelper.connStr = this.cmbSqlConStr.Text;
                 var table = SqlHelper.GetTable(sqlGetAllTables);
 
                 //存为list
@@ -170,9 +229,9 @@ namespace DBAssistant
             }
 
             var querySql = "SELECT * FROM {0}.INFORMATION_SCHEMA.COLUMNS where TABLE_NAME = '{1}'";
-           
-            
-            foreach(var ckItem in checkedItems)
+
+
+            foreach (var ckItem in checkedItems)
             {
                 //查询表列信息
                 querySql = string.Format(querySql, curDbName, ckItem);
@@ -237,5 +296,6 @@ namespace DBAssistant
         {
 
         }
+
     }
 }
