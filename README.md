@@ -4,6 +4,8 @@
 
 > **Bug:**
 > + //切换数据库，表搜索未清空
+> ![image](https://user-images.githubusercontent.com/30288645/117520466-e1be2b80-afda-11eb-856a-659e66d98045.png)
+
 
 
 
