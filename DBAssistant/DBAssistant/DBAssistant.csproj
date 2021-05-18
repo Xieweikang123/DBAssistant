@@ -48,6 +48,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChangeSize\FrameControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChangeSize\FrameControl.Designer.cs">
+      <DependentUpon>FrameControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeSize\MoveControl.cs" />
     <Compile Include="ControlExtention.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
@@ -57,6 +64,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ChangeSize\FrameControl.resx">
+      <DependentUpon>FrameControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>

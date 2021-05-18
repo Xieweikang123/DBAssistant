@@ -40,13 +40,16 @@
             this.label2 = new System.Windows.Forms.Label();
             this.lblMsg = new System.Windows.Forms.Label();
             this.clbTableList = new System.Windows.Forms.CheckedListBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtTableSearch = new System.Windows.Forms.TextBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.insertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.备份表ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtTableSearch = new System.Windows.Forms.TextBox();
             this.rtbSql = new System.Windows.Forms.RichTextBox();
             this.cmbSqlConStr = new System.Windows.Forms.ComboBox();
             this.btnConnConfig = new System.Windows.Forms.Button();
+            this.txtBoxFile = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -57,10 +60,10 @@
             this.button1.AutoSize = true;
             this.button1.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.button1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.button1.Location = new System.Drawing.Point(405, 528);
+            this.button1.Location = new System.Drawing.Point(864, 84);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(160, 54);
+            this.button1.Size = new System.Drawing.Size(88, 33);
             this.button1.TabIndex = 0;
             this.button1.Text = "连接";
             this.button1.UseVisualStyleBackColor = false;
@@ -118,9 +121,10 @@
             // 
             this.clbDbList.CheckOnClick = true;
             this.clbDbList.FormattingEnabled = true;
-            this.clbDbList.Location = new System.Drawing.Point(36, 120);
+            this.clbDbList.HorizontalScrollbar = true;
+            this.clbDbList.Location = new System.Drawing.Point(36, 141);
             this.clbDbList.Name = "clbDbList";
-            this.clbDbList.Size = new System.Drawing.Size(202, 344);
+            this.clbDbList.Size = new System.Drawing.Size(202, 424);
             this.clbDbList.TabIndex = 6;
             this.clbDbList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.dbList_ItemCheck);
             this.clbDbList.SelectedIndexChanged += new System.EventHandler(this.clbDbList_SelectedIndexChanged);
@@ -150,19 +154,39 @@
             // 
             this.clbTableList.CheckOnClick = true;
             this.clbTableList.ContextMenuStrip = this.contextMenuStrip1;
-            this.clbTableList.FormattingEnabled = true;
-            this.clbTableList.Location = new System.Drawing.Point(347, 131);
+            this.clbTableList.HorizontalScrollbar = true;
+            this.clbTableList.Location = new System.Drawing.Point(294, 141);
             this.clbTableList.Name = "clbTableList";
-            this.clbTableList.Size = new System.Drawing.Size(208, 344);
+            this.clbTableList.Size = new System.Drawing.Size(221, 424);
             this.clbTableList.TabIndex = 9;
-            this.clbTableList.Click += new System.EventHandler(this.clbTableList_Click);
-            this.clbTableList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.clbTableList_MouseClick);
-            this.clbTableList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.clbTableList_MouseDown);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.insertToolStripMenuItem,
+            this.备份表ToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(124, 52);
+            // 
+            // insertToolStripMenuItem
+            // 
+            this.insertToolStripMenuItem.Name = "insertToolStripMenuItem";
+            this.insertToolStripMenuItem.Size = new System.Drawing.Size(123, 24);
+            this.insertToolStripMenuItem.Text = "Insert";
+            this.insertToolStripMenuItem.Click += new System.EventHandler(this.insertToolStripMenuItem_Click);
+            // 
+            // 备份表ToolStripMenuItem
+            // 
+            this.备份表ToolStripMenuItem.Name = "备份表ToolStripMenuItem";
+            this.备份表ToolStripMenuItem.Size = new System.Drawing.Size(123, 24);
+            this.备份表ToolStripMenuItem.Text = "备份表";
+            this.备份表ToolStripMenuItem.Click += new System.EventHandler(this.备份表ToolStripMenuItem_Click);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(344, 102);
+            this.label3.Location = new System.Drawing.Point(291, 87);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(30, 15);
@@ -171,33 +195,20 @@
             // 
             // txtTableSearch
             // 
-            this.txtTableSearch.Location = new System.Drawing.Point(382, 99);
+            this.txtTableSearch.Location = new System.Drawing.Point(329, 84);
             this.txtTableSearch.Margin = new System.Windows.Forms.Padding(4);
             this.txtTableSearch.Name = "txtTableSearch";
             this.txtTableSearch.Size = new System.Drawing.Size(173, 25);
             this.txtTableSearch.TabIndex = 11;
             this.txtTableSearch.TextChanged += new System.EventHandler(this.txtTableSearch_TextChanged);
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.insertToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(120, 28);
-            // 
-            // insertToolStripMenuItem
-            // 
-            this.insertToolStripMenuItem.Name = "insertToolStripMenuItem";
-            this.insertToolStripMenuItem.Size = new System.Drawing.Size(119, 24);
-            this.insertToolStripMenuItem.Text = "Insert";
-            this.insertToolStripMenuItem.Click += new System.EventHandler(this.insertToolStripMenuItem_Click);
-            // 
             // rtbSql
             // 
-            this.rtbSql.Location = new System.Drawing.Point(587, 173);
+            this.rtbSql.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.rtbSql.ForeColor = System.Drawing.SystemColors.Info;
+            this.rtbSql.Location = new System.Drawing.Point(568, 141);
             this.rtbSql.Name = "rtbSql";
-            this.rtbSql.Size = new System.Drawing.Size(365, 253);
+            this.rtbSql.Size = new System.Drawing.Size(462, 424);
             this.rtbSql.TabIndex = 13;
             this.rtbSql.Text = "";
             // 
@@ -222,11 +233,32 @@
             this.btnConnConfig.UseVisualStyleBackColor = true;
             this.btnConnConfig.Click += new System.EventHandler(this.btnConnConfig_Click);
             // 
+            // txtBoxFile
+            // 
+            this.txtBoxFile.Location = new System.Drawing.Point(568, 84);
+            this.txtBoxFile.Margin = new System.Windows.Forms.Padding(4);
+            this.txtBoxFile.Name = "txtBoxFile";
+            this.txtBoxFile.Size = new System.Drawing.Size(173, 25);
+            this.txtBoxFile.TabIndex = 17;
+            this.txtBoxFile.TextChanged += new System.EventHandler(this.txtBoxFile_TextChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(515, 87);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(45, 15);
+            this.label4.TabIndex = 16;
+            this.label4.Text = "字段:";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 641);
+            this.Controls.Add(this.txtBoxFile);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.btnConnConfig);
             this.Controls.Add(this.cmbSqlConStr);
             this.Controls.Add(this.rtbSql);
@@ -245,8 +277,10 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "数据库帮助1.1";
+            this.Text = "数据库帮助1.2";
             this.Load += new System.EventHandler(this.Main_Load);
+            this.Click += new System.EventHandler(this.Main_Click);
+            this.Resize += new System.EventHandler(this.Main_Resize);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
@@ -274,6 +308,9 @@
         private System.Windows.Forms.RichTextBox rtbSql;
         private System.Windows.Forms.ComboBox cmbSqlConStr;
         private System.Windows.Forms.Button btnConnConfig;
+        private System.Windows.Forms.ToolStripMenuItem 备份表ToolStripMenuItem;
+        private System.Windows.Forms.TextBox txtBoxFile;
+        private System.Windows.Forms.Label label4;
     }
 }
 

@@ -1,7 +1,9 @@
-﻿using System;
+﻿using CommonLib;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -13,12 +15,38 @@ namespace DBAssistant
 {
     public partial class Main : Form
     {
+        private float xPos = 0;
+        private float yPos = 0;
+        private Point startPos;
+        private Button currentBtn;      //当前选中按钮
         private string curDbName;
         private List<string> tableNameList = new List<string>();
+        private Dictionary<string, List<string>> tableWithFieldDic = new Dictionary<string, List<string>>();
         private string dbConfigPath = AppDomain.CurrentDomain.BaseDirectory + "dbConfig.xml";
+
+        private float x;//定义当前窗体的宽度
+        private float y;//定义当前窗体的高度
+
+        private MoveControl moveControlTable;
+        //是否连接数据库
+        private bool IsConnectDb {
+            get
+            {
+                return this.clbDbList.Items.Count > 0;
+            }
+        }
+        /// <summary>
+        /// 鼠标按下
+        /// </summary>
+        private bool mouseIsDown = false;
+        private Rectangle mouseRect = Rectangle.Empty;
         public Main()
         {
             InitializeComponent();
+
+            x = this.Width;
+            y = this.Height;
+            setTag(this);
         }
         private void Main_Load(object sender, EventArgs e)
         {
@@ -31,8 +59,23 @@ namespace DBAssistant
             }
             InitCmbDbConfig();
 
-           
+            //配置控件缩放
+            //moveControlTable = new MoveControl(this.clbTableList);
+            //moveControlTable.lblMsg = this.lblMsg;
         }
+        #region 缩放控件
+        /// <summary>
+        /// 单击窗体时，刷新空间，目的为了把按钮放大缩小标识隐藏
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Main_Click(object sender, EventArgs e)
+        {
+            //moveControlTable.fc.Visible = false;
+            this.Refresh();
+        }
+        #endregion
+
         private void InitCmbDbConfig()
         {
             this.SafeInvoke(() =>
@@ -58,7 +101,7 @@ namespace DBAssistant
         /// <param name="e"></param>
         private void btnConnConfig_Click(object sender, EventArgs e)
         {
-            var proc= System.Diagnostics.Process.Start(dbConfigPath);
+            var proc = System.Diagnostics.Process.Start(dbConfigPath);
             proc.EnableRaisingEvents = true;
             proc.Exited += ConfigOk;
         }
@@ -124,13 +167,6 @@ namespace DBAssistant
                 clbDbList.DataSource = table;
                 clbDbList.ValueMember = "name";
                 clbDbList.DisplayMember = "name";
-
-                //foreach(DataRow row in table.Rows)
-                //{
-                //    tableNameList.Add(row["name"].ToString());
-                //}
-                //tableNameList=  GenericityHelper.TableToList(table, "name");
-
                 var reg = "Catalog=(.*?);";
                 curDbName = RegexHelper.GetFirstMatchValue(cmbSqlConStr.Text, reg);
                 //默认选中连接字符串中的数据库
@@ -160,6 +196,7 @@ namespace DBAssistant
         {
             this.clbDbList.DataSource = null;
             this.tableNameList.Clear();
+            this.tableWithFieldDic.Clear();
         }
 
         private void dbList_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -186,8 +223,15 @@ namespace DBAssistant
                 SqlHelper.connStr = this.cmbSqlConStr.Text;
                 var table = SqlHelper.GetTable(sqlGetAllTables);
 
+           
                 //存为list
                 tableNameList = GenericityHelper.TableToList(table, "TABLE_NAME");
+
+                //表对应字段
+                //foreach(var tableName in tableNameList)
+                //{
+
+                //}
 
                 clbTableList.Items.AddRange(tableNameList.ToArray());
             }
@@ -213,6 +257,11 @@ namespace DBAssistant
         /// <param name="e"></param>
         private void txtTableSearch_TextChanged(object sender, EventArgs e)
         {
+            if (!IsConnectDb)
+            {
+                MessageBox.Show("请先连接数据库");
+                return;
+            }
             this.clbTableList.Items.Clear();
 
             var sValue = this.txtTableSearch.Text;
@@ -225,6 +274,68 @@ namespace DBAssistant
 
             this.clbTableList.Items.AddRange(result.ToArray());
         }
+        
+        /// <summary>
+        /// 字段搜索
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void txtBoxFile_TextChanged(object sender, EventArgs e)
+        {
+            if (!IsConnectDb)
+            {
+                MessageBox.Show("请先连接数据库");
+                return;
+            }
+
+            var sValue = this.txtBoxFile.Text;
+            if (string.IsNullOrWhiteSpace(sValue))
+            {
+                this.rtbSql.Text = string.Empty;
+                return;
+            }
+            var sql = $"SELECT * FROM INFORMATION_SCHEMA.columns  where TABLE_CATALOG='{curDbName}' AND COLUMN_NAME like '%{sValue}%'";
+            var table = SqlHelper.GetTable(sql);
+
+            var sb = new StringBuilder("表名  列名\n");
+            var index = 1;
+            foreach(DataRow row in table.Rows)
+            {
+                sb.Append($"{index++}: {row["TABLE_NAME"]}  {row["COLUMN_NAME"]}\n");
+            }
+            this.rtbSql.Text = sb.ToString();
+            //存为list
+            //tableNameList = GenericityHelper.TableToList(table, "TABLE_NAME");
+
+        }
+        /// <summary>
+        /// 右键菜单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void 备份表ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //清空输出框
+            this.rtbSql.Text = string.Empty;
+         
+            var checkedItems = clbTableList.CheckedItems;
+            if (checkedItems.Count == 0)
+            {
+                MessageBox.Show("请选择表");
+                return;
+            }
+
+            var sql = "CREATE TABLE ";
+
+            var tempSql = "";
+            foreach (var ckItem in checkedItems)
+            {
+                tempSql = $"table:{ckItem}\n";
+                //table
+
+            }
+
+        }
 
         /// <summary>
         /// 右键菜单 生成sql插入语句
@@ -233,13 +344,6 @@ namespace DBAssistant
         /// <param name="e"></param>
         private void insertToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //生成insert语句
-            // insert into table_name()  values()
-
-            //SELECT *
-            //FROM Fur.INFORMATION_SCHEMA.COLUMNS
-            //where TABLE_NAME = 'City'
-
             //清空输出框
             this.rtbSql.Text = string.Empty;
             var checkedItems = clbTableList.CheckedItems;
@@ -278,14 +382,18 @@ namespace DBAssistant
                                 values.Append($"'{Guid.NewGuid()}'");
                                 break;
                             case "int":
+                            case "tinyint":
+                            case "smallint":
                             case "bigint":
                             case "bit":
                             case "decimal":
                                 values.Append("0");
                                 break;
+                            case "nchar":
                             case "nvarchar":
                                 values.Append("''");
                                 break;
+                            case "date":
                             case "datetime":
                             case "datetime2":
                                 values.Append($"'{DateTime.Now}'");
@@ -303,20 +411,49 @@ namespace DBAssistant
             this.lblMsg.Text = "生成insert语句成功";
         }
 
-        private void clbTableList_Click(object sender, EventArgs e)
-        {
 
+
+        private void setTag(Control cons)
+        {
+            foreach (Control con in cons.Controls)
+            {
+                con.Tag = con.Width + ";" + con.Height + ";" + con.Left + ";" + con.Top + ";" + con.Font.Size;
+                if (con.Controls.Count > 0)
+                {
+                    setTag(con);
+                }
+            }
+        }
+        private void setControls(float newx, float newy, Control cons)
+        {
+            //遍历窗体中的控件，重新设置控件的值
+            foreach (Control con in cons.Controls)
+            {
+                //获取控件的Tag属性值，并分割后存储字符串数组
+                if (con.Tag != null)
+                {
+                    string[] mytag = con.Tag.ToString().Split(new char[] { ';' });
+                    //根据窗体缩放的比例确定控件的值
+                    con.Width = Convert.ToInt32(System.Convert.ToSingle(mytag[0]) * newx);//宽度
+                    con.Height = Convert.ToInt32(System.Convert.ToSingle(mytag[1]) * newy);//高度
+                    con.Left = Convert.ToInt32(System.Convert.ToSingle(mytag[2]) * newx);//左边距
+                    con.Top = Convert.ToInt32(System.Convert.ToSingle(mytag[3]) * newy);//顶边距
+                    Single currentSize = System.Convert.ToSingle(mytag[4]) * newy;//字体大小
+                    con.Font = new Font(con.Font.Name, currentSize, con.Font.Style, con.Font.Unit);
+                    if (con.Controls.Count > 0)
+                    {
+                        setControls(newx, newy, con);
+                    }
+                }
+            }
+        }
+        private void Main_Resize(object sender, EventArgs e)
+        {
+            float newx = (this.Width) / x;
+            float newy = (this.Height) / y;
+            setControls(newx, newy, this);
         }
 
-        private void clbTableList_MouseClick(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void clbTableList_MouseDown(object sender, MouseEventArgs e)
-        {
-
-        }
-
+      
     }
 }
